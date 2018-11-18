@@ -1,30 +1,47 @@
 var express = require('express');
 var router = express.Router();
-
+var cors = require('cors')
+var path = require('path');
 var currentNumber = 0;
+
+router.use(cors())
+router.use(express.static('public'));
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'Express'
-  });
+  /* res.render('index', {
+    number: currentNumber
+  }); */
+  //res.sendFile('public/html/digi-queue.html')
+  res.sendFile(path.join(__dirname, '../public', 'html/digi-queue.html'));
 });
 
-router.get('/current-number', function (req, res, next) {
-  res.json("Aktuelle Nummer: " + currentNumber);
+router.get('/control', function (req, res, next) {
+  /* res.render('index', {
+    number: currentNumber
+  }); */
+  //res.sendFile('public/html/digi-queue.html')
+  res.sendFile(path.join(__dirname, '../public', 'html/control.html'));
 });
 
-router.get('/increase', function (req, res, next) {
-  currentNumber++;  
-  res.json("Number increased! " + currentNumber);
+router.get('/api/current-number', function (req, res, next) {
+  res.json(currentNumber);
 });
 
-router.get('/decrease', function (req, res, next) {
+router.get('/api/increase', function (req, res, next) {
+  currentNumber++;
+  res.json("Increased! " + currentNumber);
+});
+
+router.get('/api/decrease', function (req, res, next) {
   currentNumber--;
-  res.json("Number decrease! " + currentNumber);
+  if (currentNumber <= 0) {
+    currentNumber = 0;
+  }
+  res.json("Decreased! " + currentNumber);
 });
 
-router.get('/reset', function (req, res, next) {
+router.get('/api/reset', function (req, res, next) {
   currentNumber = 0;
   res.json("Number resetted");
 });
