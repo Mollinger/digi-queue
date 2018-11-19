@@ -37,3 +37,5 @@ function reset() {
     Http.send();  
 
 }
+
+//wwwproxy.bahn-net.db.de wwwproxy.bahn-net.db.de:8080
